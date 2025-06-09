@@ -1,0 +1,19 @@
+inventory:
+
+all:
+  hosts:
+    web01:
+      ansible_host: 172.31.93.172
+      ansible_user: ec2-user
+      ansible_ssh_private_key_file: clientkey.pem
+
+create clientkey.pem and add private key with 400 permission
+
+root login: create a backup file of ansible.cfg->ansible.cfg_backup
+
+create ansible.cfg using command:ansible-config init --disabled -t all > ansible.cfg
+
+vim into ansible.cfg->line 312 -> uncomment->host_key_checking=False
+
+save it and run the ping command :
+ansible web01 -m ping -I inventory
