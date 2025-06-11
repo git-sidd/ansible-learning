@@ -1,0 +1,22 @@
+
+Modules =Find,Use,Troubleshoot & Repeat:
+Using a Copy model from the docs
+---
+- name: Webserver setup
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Install httpd
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+
+    - name: Start and enable httpd service
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: Copy file from Source to Destination
+      copy:
+        src: files/index.html
+        dest: /var/www/html/index.html
