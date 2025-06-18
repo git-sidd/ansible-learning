@@ -1,0 +1,41 @@
+ubuntu@ip-172-31-85-146:~$ cd ansible
+ubuntu@ip-172-31-85-146:~/ansible$ cd exercise14/roles/
+ubuntu@ip-172-31-85-146:~/ansible/exercise14/roles$ tree
+.
+install tree by: apt install tree
+
+└── post-install
+    ├── README.md
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    │   ├── myfile
+    │   └── myfile.txt
+    ├── handlers
+    │   └── main.yml
+    ├── meta
+    │   └── main.yml
+    ├── tasks
+    │   └── main.yml
+    ├── templates
+    │   ├── ntpconf_amazonlinux.j2
+    │   └── ntpconf_ubuntu.j2
+    ├── tests
+    │   ├── inventory
+    │   └── test.yml
+    └── vars
+        └── main.yml
+
+Provisioning.yaml file
+---
+- name: Provisioning Servers
+  hosts: all
+  become: yes
+  roles:
+    - post-install
+
+
+
+
+
+
