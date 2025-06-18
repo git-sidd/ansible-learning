@@ -1,0 +1,41 @@
+---
+- name: Provisioning Servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Chrony on Amazon Linux
+      yum:
+        name: "{{item}}"
+        state: present
+      when: ansible_distribution == "Amazon"
+      loop:
+        - wget
+        - chrony
+        - git
+        - zip
+        - unzip
+    - name: Install ntp on ubuntu
+      apt:
+        name: "{{item}}"
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+      loop:
+        - wget
+        - ntp
+        - git
+        - zip
+        - unzip
+    - name: Start Service
+      service:
+        name: chronyd
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Amazon"
+
+    - name: Start Service in Ubuntu
+      service:
+        name: ntp
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Ubuntu"

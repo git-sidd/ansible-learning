@@ -1,0 +1,47 @@
+Decision making :when
+
+ubuntu@ip-172-31-85-146:~/ansible/exercise10$ cat provisioning.yaml
+---
+- name: Provisioning Servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Chrony on Amazon Linux
+      yum:
+        name: chrony
+        state: present
+      when: ansible_distribution == "Amazon"
+
+    - name: Install ntp on ubuntu
+      apt:
+        name: ntp
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Start Service
+      service:
+        name: chronyd
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Amazon"
+
+    - name: Start Service in Ubuntu
+      service:
+        name: ntp
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Ubuntu"
+
+
+ubuntu@ip-172-31-85-146:~/ansible/exercise10$
+
+
+
+
+
+
+
+
+
+
