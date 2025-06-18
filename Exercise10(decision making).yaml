@@ -1,6 +1,5 @@
-Decision making :when
-
-ubuntu@ip-172-31-85-146:~/ansible/exercise10$ cat provisioning.yaml
+#Decision making :when
+cat provisioning.yaml
 ---
 - name: Provisioning Servers
   hosts: all
@@ -32,15 +31,6 @@ ubuntu@ip-172-31-85-146:~/ansible/exercise10$ cat provisioning.yaml
         state: started
         enabled: yes
       when: ansible_distribution == "Ubuntu"
-
-
-ubuntu@ip-172-31-85-146:~/ansible/exercise10$
-
-
-
-
-
-
 
 
 

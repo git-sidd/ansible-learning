@@ -1,0 +1,82 @@
+---
+- name: Provisioning Servers
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install Chrony on Amazon Linux
+      yum:
+        name: "{{item}}"
+        state: present
+      when: ansible_distribution == "Amazon"
+      loop:
+        - wget
+        - chrony
+        - git
+        - zip
+        - unzip
+    - name: Install ntp on ubuntu
+      apt:
+        name: "{{item}}"
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+      loop:
+        - wget
+        - ntp
+        - git
+        - zip
+        - unzip
+    - name: Start Service
+      service:
+        name: chronyd
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Amazon"
+
+    - name: Start Service in Ubuntu
+      service:
+        name: ntp
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Banner File(Copy File Content)
+      copy:
+        content: '#This server is manageged by ansible. No manual Changes Please'
+        dest: /etc/motd
+
+    - name: Deploy ntp agent conf on amazon linux
+      template:
+        src: templates/ntpconf_amazonlinux
+        dest: /etc/chrony.conf
+        backup: yes
+      when: ansible_distribution == "Amazon"
+      notify:
+        - reStart Service on Amazon
+
+    - name: Deploy ntp agent conf on Ubuntu
+      template:
+        src: templates/ntpconf_ubuntu
+        dest: /etc/ntpsec/ntp.conf
+        backup: yes
+      when: ansible_distribution == "Ubuntu"
+      notify:
+        - reStart Service in Ubuntu
+
+    - name: Create a directory if it does not exist
+      file:
+        path: /opt/test45
+        state: directory
+  handlers:
+    - name: reStart Service on Amazon
+      service:
+        name: chronyd
+        state: restarted
+        enabled: yes
+      when: ansible_distribution == "Amazon"
+
+    - name: reStart Service in Ubuntu
+      service:
+        name: ntp
+        state: restarted
+      when: ansible_distribution == "Ubuntu"

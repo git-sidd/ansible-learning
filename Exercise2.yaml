@@ -1,6 +1,6 @@
-creating groups :
+#creating groups :
  
-ubuntu@ip-172-31-85-146:~/ansible/exercise2$ cat inventory
+#ubuntu@ip-172-31-85-146:~/ansible/exercise2$ #cat inventory
 all:
   hosts:
     web01:
